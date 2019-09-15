@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
-from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class UserProfileManager(BaseUserManager):
@@ -21,9 +20,9 @@ class UserProfileManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, name, password):
+    def create_superuser(self, email, name, phone, password):
         """Create a super user"""
-        user = self.create_user(email, name, password)
+        user = self.create_user(email, name, phone, password)
 
         user.is_superuser = True
         user.is_staff = True
@@ -35,7 +34,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     """Database model for users in the system"""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=50)
-    phone = models.IntegerField(validators=[MinValueValidator(10), MaxValueValidator(10)])
+    phone = models.IntegerField()
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
